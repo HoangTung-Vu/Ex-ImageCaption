@@ -17,10 +17,10 @@ class VisionEncoder(nn.Module):
         self.patch_proj = nn.Linear(patch_dim, hidden_size)
 
         self.pos_embedding = nn.Parameter(torch.randn(1, num_patches, hidden_size)) # [1, num_patches, hidden_size]
-        self.dropout = nn.Dropout(0.3)
+        self.dropout = nn.Dropout(0.2)
 
         self.blocks = nn.ModuleList([
-            TransformerBlock(hidden_size=hidden_size, num_heads=num_heads, drop_out=0.3, is_decoder=False)
+            TransformerBlock(hidden_size=hidden_size, num_heads=num_heads, drop_out=0.2, is_decoder=False)
             for _ in range(num_layers)
         ])
 

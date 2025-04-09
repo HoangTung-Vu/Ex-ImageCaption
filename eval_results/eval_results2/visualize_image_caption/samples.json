@@ -1,0 +1,112 @@
+[
+    {
+        "image_path": "data/flickr8k/Images/3325910784_5ecb88310c.jpg",
+        "references": [
+            "A dog is leaping over a tree stump .",
+            "A dog jumps off a tree stump .",
+            "a small brown and white dog jumping off of a tree stump",
+            "A white and brown dog , wearing a bandanna , jumps through the air .",
+            "A white dog is leaping over a tree stump ."
+        ],
+        "hypothesis": "a small white dog is jumping over a log ."
+    },
+    {
+        "image_path": "data/flickr8k/Images/3184031654_34b5c4ffe1.jpg",
+        "references": [
+            "The middle eastern woman wearing the pink headscarf is walking beside a woman in a purple headscarf .",
+            "Two Muslim woman wearing their head scarves and frowning faces .",
+            "Two women are wearing lavender scarves an their heads .",
+            "Two women dressed with scarves over their heads look angrily at the photographer .",
+            "Two women in head wraps ."
+        ],
+        "hypothesis": "two women in colorful dresses look at something ."
+    },
+    {
+        "image_path": "data/flickr8k/Images/2665264979_df9c284bf8.jpg",
+        "references": [
+            "A girl begins to wade through deep grass that covers a stone structure on a coastline .",
+            "A girl is walking on a sandy path .",
+            "A small girl playing in a park .",
+            "A young girl in a white cap is walking through an area with trees .",
+            "A young girl with a read shirt and a white hat playing among the foliage ."
+        ],
+        "hypothesis": "a young girl wearing a white shirt and jeans is jumping on a rock ."
+    },
+    {
+        "image_path": "data/flickr8k/Images/3470129475_9e58b6742c.jpg",
+        "references": [
+            "A boy does a trick on his bike as other kids watch .",
+            "A boy on a bicycle in midair",
+            "A male doing a trick in the air on his bike .",
+            "A man jumps his bicycle high above a cement incline .",
+            "A man on a BMX bike in midair"
+        ],
+        "hypothesis": "a boy in a yellow shirt is jumping a bicycle over a ramp ."
+    },
+    {
+        "image_path": "data/flickr8k/Images/3163563871_cef3cf33ea.jpg",
+        "references": [
+            "A boy in a white shirt and blue shirts is playing tennis .",
+            "A boy swings his tennis racket at a tennis ball .",
+            "A kid in a black cap and light blue shorts playing tennis .",
+            "A person with sunglasses , blue shorts and a white shirt hitting a tennis ball .",
+            "A woman is hitting a tennis ball ."
+        ],
+        "hypothesis": "a boy in a blue shirt is playing tennis ."
+    },
+    {
+        "image_path": "data/flickr8k/Images/1253264731_e7c689eca5.jpg",
+        "references": [
+            "A girl in a coral shirt with glasses is smiling while leaning against a fence .",
+            "A girl wearing a pink shirt and overalls is smiling and there is another child that is out of focus .",
+            "Children playing in stopped motion",
+            "Two children are standing on a green metal fence .",
+            "Two girls , one in overalls , holding on to a fence with water behind them ."
+        ],
+        "hypothesis": "a woman in a red shirt is sitting on a wooden fence ."
+    },
+    {
+        "image_path": "data/flickr8k/Images/3091580843_178042c50b.jpg",
+        "references": [
+            "A man in a black jacket walks thorugh an Asian market .",
+            "A man walking down a street with Asian shops .",
+            "A man walking on the sidewalk past storefronts .",
+            "A man walks in a street",
+            "A man walks on the sidewalk by a sign ."
+        ],
+        "hypothesis": "a man stands in front of a yellow sign that says , yellow sign ."
+    },
+    {
+        "image_path": "data/flickr8k/Images/2896180326_88785fe078.jpg",
+        "references": [
+            "A group of motocross racers lined up to start .",
+            "A group of people are sitting on dirt bikes in a grassy field .",
+            "A group of people on racing bikes on a field .",
+            "A line of people are sitting on their motorcycles .",
+            "A row of men on motorbikes line up in the grass ."
+        ],
+        "hypothesis": "a group of people riding bikes on a grassy field ."
+    },
+    {
+        "image_path": "data/flickr8k/Images/2103568100_5d018c495b.jpg",
+        "references": [
+            "A dog in some water enclosed by rocky ledge .",
+            "A white dog is standing in a pond .",
+            "A white dog is walking through a river that runs through a rocky landscape .",
+            "A white dog walks through shallow water in the wilderness .",
+            "The white dog is wading in the pond atop the mountain ."
+        ],
+        "hypothesis": "a white dog is running through a river with a stick in its mouth ."
+    },
+    {
+        "image_path": "data/flickr8k/Images/2976946039_fb9147908d.jpg",
+        "references": [
+            "A group of people surf on a very large wave .",
+            "a group of surfers catching a wave",
+            "People surfing and attempting to surf in the ocean on a big wave .",
+            "Several people are surfing on a wave in the sea .",
+            "Surfers on a huge ocean wave at sunset ."
+        ],
+        "hypothesis": "a surfer rides a wave ."
+    }
+]

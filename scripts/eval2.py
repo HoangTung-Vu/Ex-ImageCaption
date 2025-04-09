@@ -105,7 +105,7 @@ def main():
     config = load_config()
     
     # Set output directory and checkpoint path
-    output_dir = "eval_results_ictransformer2"
+    output_dir = "eval_results2"
     checkpoint_path = os.path.join(config["training"]["checkpoint_path"], "best_model.pth")
     num_samples = 10
     

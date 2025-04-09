@@ -41,6 +41,7 @@ def load_model(config: Dict[str, Any], checkpoint_path: str, device: torch.devic
     """
     # Import model dynamically
     from models.ICtransformer import ICTransformer
+    from models.ICtransformer2 import ICTransformer2
     
     # Load checkpoint
     checkpoint = torch.load(checkpoint_path, map_location=device)
@@ -49,14 +50,14 @@ def load_model(config: Dict[str, Any], checkpoint_path: str, device: torch.devic
     vocab = checkpoint['vocab']
     
     # Create model
-    model = ICTransformer(
+    model = ICTransformer2(
         image_size=config['model']['image_size'],
         channels_in=3,
         vocab_size=len(vocab),
-        patch_size=config['model']['patch_size'],
+        vit_model=config['model'].get('vit_model', 'vit_base_patch16_224'),
         hidden_size=config['model']['hidden_size'],
-        num_layers=(config['model']['num_encoder_layers'], config['model']['num_decoder_layers']),
-        num_heads=(config['model']['num_encoder_heads'], config['model']['num_decoder_heads'])
+        num_layers=config['model']['num_decoder_layers'],
+        num_heads=config['model']['num_decoder_heads']
     )
     
     # Load model weights

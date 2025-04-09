@@ -3,7 +3,7 @@ import torch.nn as nn
 from models.modules import * 
 
 class Decoder(nn.Module):
-    def __init__(self, vocab_size : int, hidden_size : int = 256, num_layers : int = 2, num_heads : int = 4, drop_out : float = 0.3):
+    def __init__(self, vocab_size : int, hidden_size : int = 256, num_layers : int = 2, num_heads : int = 4, drop_out : float = 0.2):
         super(Decoder, self).__init__()
         self.hidden_size = hidden_size
 

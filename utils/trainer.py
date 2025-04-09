@@ -168,7 +168,7 @@ class Trainer :
             # For ICTransformer, train all parameters
             params = self.model.parameters()
             
-        self.optimizer = optim.Adam(params, lr=self.learning_rate, weight_decay=1e-3)
+        self.optimizer = optim.Adam(params, lr=self.learning_rate, weight_decay=1e-4)
         self.scheduler = optim.lr_scheduler.ReduceLROnPlateau(self.optimizer, mode='min', factor=0.1, patience=1, verbose=True)
         self.writer = SummaryWriter(log_dir=os.path.join(self.checkpoint_path, "logs"))
         print("Model components initialized:")

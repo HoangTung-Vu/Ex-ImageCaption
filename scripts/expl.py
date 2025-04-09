@@ -78,10 +78,10 @@ if __name__ == "__main__":
     from utils.load import load_config, load_model
 
 
-    img_path = "data/flickr8k/Images/3545793128_af3af544dc.jpg"
+    img_path = "/home/hoangtungvum/CODE/Explain_Image_Captioning/data/flickr8k/Images/47871819_db55ac4699.jpg"
     config_path = "config/train_config1.json"
     config = load_config(config_path)
-    checkpoint_path = "checkpoints/best_model.pth"
+    checkpoint_path = "checkpoints_ictransformer2/best_model.pth"
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     model, vocab = load_model(config, checkpoint_path, device)
