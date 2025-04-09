@@ -63,7 +63,7 @@ class Trainer :
         self.num_workers = num_workers
 
 
-        self.device = device 
+        self.device = device if device is not None else torch.device("cuda" if torch.cuda.is_available() else "cpu")
         print(f"Using device: {self.device}")
         os.makedirs(self.checkpoint_path, exist_ok=True)
 
@@ -78,8 +78,8 @@ class Trainer :
         self.scheduler: Optional[optim.lr_scheduler._LRScheduler] = None
         self.writer: Optional[SummaryWriter] = None
 
-        self.scaler = torch.amp.GradScaler("cuda") if self.use_mixed_precision else None
-        if self.use_mixed_precision:
+        self.scaler = torch.amp.GradScaler() if self.use_mixed_precision and torch.cuda.is_available() else None
+        if self.use_mixed_precision and torch.cuda.is_available():
             print("Mixed precision training enabled.")
         
         self.transform = transforms.Compose([
@@ -143,15 +143,33 @@ class Trainer :
         """
         Initialize the model, loss function, optimizer, and learning rate scheduler.
         """
-        self.model.decoder.embedding = nn.Embedding(
-            self.vocab_size, 
-            self.model.decoder.hidden_size, 
-            padding_idx=self.pad_idx
-        )
+        # Check if the model is ICTransformer or ICTransformer2
+        if hasattr(self.model, 'decoder') and hasattr(self.model.decoder, 'embedding'):
+            # Update the embedding layer with the correct vocabulary size
+            self.model.decoder.embedding = nn.Embedding(
+                self.vocab_size, 
+                self.model.decoder.hidden_size, 
+                padding_idx=self.pad_idx
+            )
+            
+            # Update the output layer if it exists
+            if hasattr(self.model.decoder, 'fc_out'):
+                self.model.decoder.fc_out = nn.Linear(self.model.decoder.hidden_size, self.vocab_size)
+        
         self.model.to(self.device)
         self.criterion = nn.CrossEntropyLoss(ignore_index=self.pad_idx)
-        self.optimizer = optim.Adam(self.model.parameters(), lr=self.learning_rate, weight_decay = 1e-3)
-        self.scheduler = optim.lr_scheduler.ReduceLROnPlateau(self.optimizer,mode='min', factor=0.1, patience=1, verbose=True)
+        
+        # For ICTransformer2, we only want to train the decoder and projection layer
+        if self.model.__class__.__name__ == 'ICTransformer2':
+            # Filter parameters that require gradients (decoder and projection)
+            params = [p for p in self.model.parameters() if p.requires_grad]
+            print(f"Training {len(params)} parameter groups (decoder and projection only)")
+        else:
+            # For ICTransformer, train all parameters
+            params = self.model.parameters()
+            
+        self.optimizer = optim.Adam(params, lr=self.learning_rate, weight_decay=1e-3)
+        self.scheduler = optim.lr_scheduler.ReduceLROnPlateau(self.optimizer, mode='min', factor=0.1, patience=1, verbose=True)
         self.writer = SummaryWriter(log_dir=os.path.join(self.checkpoint_path, "logs"))
         print("Model components initialized:")
         print(f"  Model: {self.model.__class__.__name__}")
@@ -238,7 +256,7 @@ class Trainer :
             images, input_caption, target_caption, padding_mask = self._prepare_batch(batch) # New
             
             if self.use_mixed_precision and self.scaler is not None:
-                with torch.amp.autocast("cuda"):
+                with torch.amp.autocast(device_type="cuda" if torch.cuda.is_available() else "cpu"):
                     outputs = self.model(images, input_caption, padding_mask = padding_mask)
                     loss = self.criterion(
                         outputs.reshape(-1, outputs.shape[-1]), 
@@ -383,7 +401,7 @@ class Trainer :
             
             if isinstance(self.scheduler, optim.lr_scheduler.ReduceLROnPlateau):
                 self.scheduler.step(val_loss)
-            else:
+            elif self.scheduler is not None:
                 self.scheduler.step()
                 
             is_best = val_loss < best_val_loss
@@ -405,4 +423,3 @@ class Trainer :
                 
         self.writer.close()
         print("Training complete!")
-
