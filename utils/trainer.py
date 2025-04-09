@@ -352,9 +352,11 @@ class Trainer :
                     'true': ' '.join(true_caption)
                 })
                 
+        print(f"Sample captions at epoch {epoch}:")
         for i, sample in enumerate(samples):
-            self.writer.add_text(f'Caption/sample_{i}/generated', sample['generated'], epoch)
-            self.writer.add_text(f'Caption/sample_{i}/true', sample['true'], epoch)
+            print(f"Sample {i + 1}:")
+            print(f"Generated: {sample['generated']}")
+            print(f"True: {sample['true']}")
     
     def load_checkpoint(self, checkpoint_path: str) -> int:
         if not os.path.exists(checkpoint_path):

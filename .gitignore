@@ -1,3 +1,5 @@
 /data
 /checkpoints
 /exIC
+**/checkpoints_*/
+/__pycache__
