@@ -13,7 +13,7 @@ from typing import Dict, List, Tuple, Any, Optional
 # Add parent directory to path to import modules
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from models.ICTransformer2 import ICTransformer2
+from models.ICtransformer2 import ICTransformer2
 from utils.evaluator import Evaluator
 from utils.dataloader import FlickrDataset, get_loader
 import torchvision.transforms as transforms
