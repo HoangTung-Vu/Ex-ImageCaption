@@ -1,5 +1,3 @@
-# --- START OF FILE models/base_model.py ---
-
 import torch
 import torch.nn as nn
 import math
@@ -60,9 +58,9 @@ class BaseModel(nn.Module):
             last_layer_attn = attn_layers[-1]  # (1, seq_len, num_patches)
             attention_vector = last_layer_attn[0, -1]  # shape: (num_patches,)
 
-            grid_size = int(math.sqrt(attention_vector.size(0)))
-            heatmap = attention_vector.view(grid_size, grid_size).detach().cpu().numpy()
-            attention_maps.append(heatmap)
+            # grid_size = int(math.sqrt(attention_vector.size(0)))
+            # heatmap = attention_vector.view(grid_size, grid_size).detach().cpu().numpy()
+            attention_maps.append(attention_vector)
 
             caption_indices.append(next_token.item())
 

@@ -5,6 +5,7 @@ import torchvision.transforms.functional as TF
 from torchvision import transforms
 from PIL import Image
 import os
+import math
 
 def visualize_attention(image_tensor, caption, attention_maps, save_path=None):
     """
@@ -65,6 +66,12 @@ def explain_inference_image(img_path: str, model, vocab, device='cuda'):
 
     # Generate caption and attention maps
     caption, attention_maps = model.caption_image_greedy(image_tensor, vocab)
+    modelname = model.__class__.__name__
+    if modelname == 'ICTransformer2' or modelname == 'ICTransformer':
+        grid_size = int(math.sqrt(attention_maps[0].size(0)))
 
-    return image_tensor, caption, attention_maps
+        heatmap = [attention_vector.view(grid_size, grid_size).detach().cpu().numpy() for attention_vector in attention_maps]
+    else:
+        return "Model not supported for explanation"
+    return image_tensor, caption, heatmap
 

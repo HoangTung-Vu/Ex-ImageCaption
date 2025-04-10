@@ -27,7 +27,7 @@ def load_config(config_path: str) -> Dict[str, Any]:
         config = json.load(f)
     return config
 
-def load_model(config: Dict[str, Any], checkpoint_path: str, device: torch.device) -> Tuple[torch.nn.Module, Any]:
+def load_model(config: Dict[str, Any], checkpoint_path: str, device: torch.device, model_type : str = 'ict2') -> Tuple[torch.nn.Module, Any]:
     """
     Load model from checkpoint.
     
@@ -49,16 +49,28 @@ def load_model(config: Dict[str, Any], checkpoint_path: str, device: torch.devic
     # Get vocabulary from checkpoint
     vocab = checkpoint['vocab']
     
-    # Create model
-    model = ICTransformer2(
-        image_size=config['model']['image_size'],
-        channels_in=3,
-        vocab_size=len(vocab),
-        vit_model=config['model'].get('vit_model', 'vit_base_patch16_224'),
-        hidden_size=config['model']['hidden_size'],
-        num_layers=config['model']['num_decoder_layers'],
-        num_heads=config['model']['num_decoder_heads']
-    )
+    if model_type == 'ict2' : 
+        # Create model
+        model = ICTransformer2(
+            image_size=config['model']['image_size'],
+            channels_in=3,
+            vocab_size=len(vocab),
+            vit_model=config['model'].get('vit_model', 'vit_base_patch16_224'),
+            hidden_size=config['model']['hidden_size'],
+            num_layers=config['model']['num_decoder_layers'],
+            num_heads=config['model']['num_decoder_heads']
+        )
+    elif model_type == 'ict' :
+        # Create model
+        model = ICTransformer(
+            image_size=config['model']['image_size'],
+            patch_size = config['model']['patch_size'],
+            channels_in=3,
+            vocab_size=len(vocab),
+            hidden_size=config['model']['hidden_size'],
+            num_layers=(config['model']['num_encoder_layers'], config['model']['num_decoder_layers']),
+            num_heads= (config['model']['num_encoder_heads'], config['model']['num_decoder_heads']),
+        )
     
     # Load model weights
     model.load_state_dict(checkpoint['model_state_dict'])
