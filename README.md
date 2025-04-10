@@ -4,7 +4,6 @@ This repository contains an implementation of a Transformer-based architecture f
 
 ## Repository Structure
 
-\`\`\`
 .
 ├── checkpoints/            # Model checkpoints
 ├── config/                 # Configuration files
@@ -31,7 +30,6 @@ This repository contains an implementation of a Transformer-based architecture f
     ├── explain.py          # Explanation utilities
     ├── load.py             # Model loading utilities
     └── trainer.py          # Training utilities
-\`\`\`
 
 ## Model Architecture
 
