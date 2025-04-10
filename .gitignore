@@ -2,6 +2,6 @@
 /checkpoints
 /exIC
 **/checkpoints_*/
-/__pycache__
 /eval_results
 /.DS_Store
+**/__pycache__/
