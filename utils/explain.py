@@ -67,10 +67,11 @@ def explain_inference_image(img_path: str, model, vocab, device='cuda'):
     # Generate caption and attention maps
     caption, attention_maps = model.caption_image_greedy(image_tensor, vocab)
     modelname = model.__class__.__name__
-    if modelname == 'ICTransformer2' or modelname == 'ICTransformer':
+    if modelname == 'ICTransformer2' or modelname == 'ICTransformer' or modelname == 'ConvEnTransDe':
         grid_size = int(math.sqrt(attention_maps[0].size(0)))
 
         heatmap = [attention_vector.view(grid_size, grid_size).detach().cpu().numpy() for attention_vector in attention_maps]
+    
     else:
         return "Model not supported for explanation"
     return image_tensor, caption, heatmap

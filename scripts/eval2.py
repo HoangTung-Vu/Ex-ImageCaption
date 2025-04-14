@@ -13,61 +13,11 @@ from typing import Dict, List, Tuple, Any, Optional
 # Add parent directory to path to import modules
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from models.ICtransformer2 import ICTransformer2
 from utils.evaluator import Evaluator
 from utils.dataloader import FlickrDataset, get_loader
 import torchvision.transforms as transforms
+from utils.load import load_model, load_config
 
-def load_config() -> Dict[str, Any]:
-    """
-    Load configuration from JSON file.
-    
-    Returns:
-        Configuration dictionary
-    """
-    config_path = "config/train_config2.json"
-    with open(config_path, 'r') as f:
-        config = json.load(f)
-    return config
-
-def load_model(config: Dict[str, Any], checkpoint_path: str, device: torch.device) -> Tuple[torch.nn.Module, Any]:
-    """
-    Load ICTransformer2 model from checkpoint.
-    
-    Args:
-        config: Configuration dictionary
-        checkpoint_path: Path to the checkpoint file
-        device: Device to load the model on
-        
-    Returns:
-        Tuple of (model, vocabulary)
-    """
-    # Load checkpoint
-    checkpoint = torch.load(checkpoint_path, map_location=device)
-    
-    # Get vocabulary from checkpoint
-    vocab = checkpoint['vocab']
-    
-    # Create ICTransformer2 model
-    model = ICTransformer2(
-        image_size=config['model']['image_size'],
-        channels_in=3,
-        vocab_size=len(vocab),
-        vit_model=config['model'].get('vit_model', 'vit_base_patch16_224'),
-        hidden_size=config['model']['hidden_size'],
-        num_layers=config['model']['num_decoder_layers'],
-        num_heads=config['model']['num_decoder_heads']
-    )
-    
-    # Load model weights
-    model.load_state_dict(checkpoint['model_state_dict'])
-    model.to(device)
-    model.eval()
-    
-    print(f"ICTransformer2 model loaded from {checkpoint_path}")
-    print(f"Model was trained for {checkpoint['epoch']} epochs")
-    
-    return model, vocab
 
 def group_references_by_image(dataset: FlickrDataset) -> Tuple[List[str], List[List[str]]]:
     """
@@ -99,13 +49,13 @@ def group_references_by_image(dataset: FlickrDataset) -> Tuple[List[str], List[L
 
 def main():
     """
-    Run evaluation on the ICTransformer2 model.
+    Run evaluation on the ictransformer2 model.
     """
     # Load configuration
-    config = load_config()
+    config = load_config(config_path="config/train_config2.json")
     
     # Set output directory and checkpoint path
-    output_dir = "eval_results2"
+    output_dir = "eval_results/eval_results2"
     checkpoint_path = os.path.join(config["training"]["checkpoint_path"], "best_model.pth")
     num_samples = 10
     
@@ -142,8 +92,8 @@ def main():
     print(f"Found {len(image_paths)} unique images with multiple references")
     
     # Load model
-    print("Loading ICTransformer2 model...")
-    model, vocab = load_model(config, checkpoint_path, device)
+    print("Loading ictransformer2 model...")
+    model, vocab = load_model(config, checkpoint_path, device, model_type ='ict2')
     
     # Generate captions for all images
     print("Generating captions...")
@@ -206,7 +156,7 @@ def main():
     
     # Close tensorboard writer
     writer.close()
-    print(f"Evaluation of ICTransformer2 complete. Results saved to {output_dir}")
+    print(f"Evaluation of ConvEnTransDe complete. Results saved to {output_dir}")
 
 if __name__ == "__main__":
     main()
