@@ -94,7 +94,7 @@ def main():
     
     # Load model
     print("Loading CETD model...")
-    model, vocab = load_model(config, checkpoint_path, device, model_type ='cetd')
+    model, vocab = load_model(config, checkpoint_path, device)
     
     # Generate captions for all images
     print("Generating captions...")

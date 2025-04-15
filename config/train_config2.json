@@ -7,7 +7,7 @@
       "num_workers": 4
     },
     "model": {
-      "type": "ICTransformer2",
+      "type": "ict2",
       "image_size": 224,
       "vit_model": "vit_base_patch16_224",
       "hidden_size": 512,

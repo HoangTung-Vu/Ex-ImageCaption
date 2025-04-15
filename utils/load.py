@@ -27,7 +27,7 @@ def load_config(config_path: str) -> Dict[str, Any]:
         config = json.load(f)
     return config
 
-def load_model(config: Dict[str, Any], checkpoint_path: str, device: torch.device, model_type : str = 'ict2') -> Tuple[torch.nn.Module, Any]:
+def load_model(config: Dict[str, Any], checkpoint_path: str, device: torch.device) -> Tuple[torch.nn.Module, Any]:
     """
     Load model from checkpoint.
     
@@ -50,7 +50,8 @@ def load_model(config: Dict[str, Any], checkpoint_path: str, device: torch.devic
     
     # Get vocabulary from checkpoint
     vocab = checkpoint['vocab']
-    
+    model_type = config['model']['type']
+
     if model_type == 'ict2' : 
         # Create model
         model = ICTransformer2(

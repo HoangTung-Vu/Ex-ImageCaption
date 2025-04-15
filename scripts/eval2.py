@@ -93,7 +93,7 @@ def main():
     
     # Load model
     print("Loading ictransformer2 model...")
-    model, vocab = load_model(config, checkpoint_path, device, model_type ='ict2')
+    model, vocab = load_model(config, checkpoint_path, device)
     
     # Generate captions for all images
     print("Generating captions...")
