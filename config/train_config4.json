@@ -1,0 +1,27 @@
+{
+    "data": {
+      "data_root": "data/flickr8k/Images",
+      "caption_file": "data/flickr8k/captions.txt",
+      "vocab_threshold": 3,
+      "validation_split": 0.15,
+      "num_workers": 4
+    },
+    "model": {
+      "type": "cvtic",
+      "image_size": 224,
+      "hidden_size": 512,
+      "num_decoder_layers": 2,
+      "num_decoder_heads": 8
+    },
+    "training": {
+      "batch_size": 64,
+      "num_epochs": 50,
+      "learning_rate": 0.0003,
+      "save_freq": 2,
+      "checkpoint_path": "checkpoints_cvtic/",
+      "resume": null,
+      "mixed_precision": true,
+      "early_stopping": 5
+    }
+  }
+  

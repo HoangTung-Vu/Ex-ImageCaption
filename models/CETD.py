@@ -44,7 +44,7 @@ class EncoderWrapper(nn.Module):
         features = features.view(B, C, H*W)
         features_permuted = features.permute(0, 2, 1)
 
-        encoded_seq = self.projection(features_permuted)  # [B, C, H*W] -> [B, SeqLen, hidden_size]
+        encoded_seq = self.projection(features_permuted)  # [B, H*W, C] -> [B, SeqLen, hidden_size]
         return encoded_seq
 
 

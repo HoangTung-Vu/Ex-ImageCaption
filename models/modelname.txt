@@ -1,3 +1,4 @@
 ict : ICTransformer
 ict2 : ICTransformer2 (with pretrained ViT encoder)
 cetd : ConvEnTransDe
+cvtic : CvT_IC
