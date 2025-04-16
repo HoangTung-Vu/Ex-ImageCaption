@@ -32,7 +32,7 @@ def visualize_attention(image_tensor, caption, attention_maps, save_path=None):
     for i, (word, attn) in enumerate(zip(caption, attention_maps)):
         ax = axs[i + 1]
         ax.imshow(image)
-        ax.imshow(attn, alpha=0.6, extent=(0, image.width, image.height, 0))
+        ax.imshow(attn, alpha=0.5, extent=(0, image.width, image.height, 0))
         ax.set_title(f"[ {word} ]", fontsize=8)
         ax.axis("off")
 

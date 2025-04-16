@@ -89,7 +89,7 @@ def load_model(config: Dict[str, Any], checkpoint_path: str, device: torch.devic
             hidden_size=config['model']['hidden_size'],
             num_layers=config['model']['num_decoder_layers'],
             num_heads=config['model']['num_decoder_heads'],
-
+            cvt_model_name='microsoft/cvt-21'
         )
 
 

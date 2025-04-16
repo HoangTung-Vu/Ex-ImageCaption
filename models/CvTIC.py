@@ -57,6 +57,9 @@ class CvT_IC(BaseModel):
             num_layers=num_layers,
             num_heads=num_heads
         )
+        # Ensure decoder parameters require gradients (they should by default)
+        for param in self.decoder.parameters():
+            param.requires_grad = True
 
     def forward(self,
                 input_image: torch.Tensor,

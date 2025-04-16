@@ -22,8 +22,8 @@ def reconstruct_heatmap(conv_layers, rf_map):
         # 1) Nội suy bilinear để upsample
         x = F.interpolate(x, scale_factor=stride, mode='bilinear', align_corners=False)
         # 2) Làm mịn với kernel trung bình 3×3 (có thể điều chỉnh kích thước nếu cần)
-        smoothing_kernel = torch.ones(1, 1, 3, 3, device=x.device) / 9.0
-        x = F.conv2d(x, weight=smoothing_kernel, padding=1)
+        # smoothing_kernel = torch.ones(1, 1, 3, 3, device=x.device) / 9.0
+        # x = F.conv2d(x, weight=smoothing_kernel, padding=1)
     return x
 
 
