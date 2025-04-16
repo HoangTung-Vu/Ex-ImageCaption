@@ -11,7 +11,7 @@ from utils.trainer import Trainer
 
 def main():
     # Load config directly from the ICTransformer2 config file
-    config_path = "config/train_config3.json"
+    config_path = "config/train_config4.json"
     with open(config_path, "r") as f:
         config = json.load(f)
 

@@ -42,7 +42,7 @@ def load_model(config: Dict[str, Any], checkpoint_path: str, device: torch.devic
     # Import model dynamically
     from models.ICtransformer import ICTransformer
     from models.ICtransformer2 import ICTransformer2
-    from models.CvTIC import CvTConvEnTransDe
+    from models.CvTIC import CvT_IC
     from models.CETD import ConvEnTransDe
     
     # Load checkpoint
@@ -83,6 +83,16 @@ def load_model(config: Dict[str, Any], checkpoint_path: str, device: torch.devic
             num_layers=config['model']['num_decoder_layers'],
             num_heads=config['model']['num_decoder_heads'],
         )
+    elif model_type == 'cvtic':
+            model = CvT_IC(
+            vocab_size=len(vocab),
+            hidden_size=config['model']['hidden_size'],
+            num_layers=config['model']['num_decoder_layers'],
+            num_heads=config['model']['num_decoder_heads'],
+
+        )
+
+
     # Load model weights
     model.load_state_dict(checkpoint['model_state_dict'])
     model.to(device)

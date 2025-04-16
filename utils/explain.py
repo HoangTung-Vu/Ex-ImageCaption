@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import torch
 import torchvision.transforms.functional as TF
+import torch.nn as nn
+import torch.nn.functional as F
 from torchvision import transforms
 from PIL import Image
 import os
@@ -30,7 +32,7 @@ def visualize_attention(image_tensor, caption, attention_maps, save_path=None):
     for i, (word, attn) in enumerate(zip(caption, attention_maps)):
         ax = axs[i + 1]
         ax.imshow(image)
-        ax.imshow(attn, cmap='Greens', alpha=0.6, extent=(0, image.width, image.height, 0))
+        ax.imshow(attn, alpha=0.6, extent=(0, image.width, image.height, 0))
         ax.set_title(f"[ {word} ]", fontsize=8)
         ax.axis("off")
 
@@ -38,6 +40,26 @@ def visualize_attention(image_tensor, caption, attention_maps, save_path=None):
     if save_path:
         plt.savefig(save_path, bbox_inches='tight', dpi=300)
     plt.show()
+
+def reconstruct_heatmap(conv_layers, rf_map):
+    """
+    Dùng cho mô hình sử dụng Conv
+    Args:
+        conv_layers: list of nn.Conv2d (stride >= 1)
+        rf_map: Tensor, shape (B,1,H',W'), receptive field heatmap (1 channel)
+    Returns:
+        heatmap: Tensor, shape (B,1,H, W), phóng ngược về kích thước gốc nhờ upsample + smoothing
+    """
+    x = rf_map
+    for conv in reversed(conv_layers):
+        stride = conv.stride[0] if isinstance(conv.stride, (tuple, list)) else conv.stride
+        x = F.interpolate(x, scale_factor=stride, mode='bilinear', align_corners=False)
+
+        k = conv.kernel_size[0] if isinstance(conv.kernel_size, (tuple, list)) else conv.kernel_size
+        smoothing_kernel = torch.ones(1, 1, k, k, device=x.device) / (k * k)
+        x = F.conv2d(x, weight=smoothing_kernel, padding=k // 2)
+        
+    return x
 
 
 def explain_inference_image(img_path: str, model, vocab, device='cuda'):
@@ -71,8 +93,24 @@ def explain_inference_image(img_path: str, model, vocab, device='cuda'):
         grid_size = int(math.sqrt(attention_maps[0].size(0)))
 
         heatmap = [attention_vector.view(grid_size, grid_size).detach().cpu().numpy() for attention_vector in attention_maps]
-    
+    elif modelname == 'CvT_IC' : 
+        grid_size = int(math.sqrt(attention_maps[0].size(0)))
+        conv_layers = [
+            nn.Conv2d(kernel_size=7, in_channels=3, out_channels=64, stride=4, padding=3), 
+            nn.Conv2d(kernel_size=3, in_channels=64, out_channels=192, stride=2, padding=1), 
+            nn.Conv2d(kernel_size=3, in_channels=129, out_channels=384, stride=2, padding=1),
+        ]
+        heatmap = [
+            reconstruct_heatmap(
+                conv_layers,
+                attention_vector.view(1, 1, grid_size, grid_size)  # Shape: [B=1, C=1, H, W]
+            ).squeeze(0).squeeze(0).detach().cpu().numpy()  # Remove batch and channel dim for visualization
+            for attention_vector in attention_maps
+        ]
+
+
     else:
         return "Model not supported for explanation"
     return image_tensor, caption, heatmap
+
 
