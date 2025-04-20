@@ -53,10 +53,10 @@ def main():
     Run evaluation on the CETD model.
     """
     # Load configuration
-    config = load_config(config_path="config/train_config4.json")
+    config = load_config(config_path="config/train_config5.json")
     
     # Set output directory and checkpoint path
-    output_dir = "eval_results/eval_results4"
+    output_dir = "eval_results/eval_results5"
     checkpoint_path = os.path.join(config["training"]["checkpoint_path"], "best_model.pth")
     num_samples = 10
     
@@ -122,7 +122,7 @@ def main():
     results = evaluator.evaluate(grouped_references, hypotheses)
     
     # Save results
-    evaluator.save_results(results, filename="cvtic_evaluation_results.json")
+    evaluator.save_results(results, filename="cvtic2_evaluation_results.json")
     
     # Save sample captions for visualization
     sample_indices = np.random.choice(len(image_paths), min(num_samples, len(image_paths)), replace=False)

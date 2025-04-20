@@ -25,7 +25,6 @@ def main():
     # Set device
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    # Initialize ICTransformer2 model
     model = ConvEnTransDe(
         image_size=model_cfg["image_size"],
         channels_in=3,

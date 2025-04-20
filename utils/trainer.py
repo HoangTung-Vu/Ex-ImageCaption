@@ -159,14 +159,10 @@ class Trainer :
         self.model.to(self.device)
         self.criterion = nn.CrossEntropyLoss(ignore_index=self.pad_idx)
         
-        # For ICTransformer2, we only want to train the decoder and projection layer
-        if self.model.__class__.__name__ == 'ICTransformer2':
-            # Filter parameters that require gradients (decoder and projection)
-            params = [p for p in self.model.parameters() if p.requires_grad]
-            print(f"Training {len(params)} parameter groups (decoder and projection only)")
-        else:
-            # For ICTransformer, train all parameters
-            params = self.model.parameters()
+
+        params = [p for p in self.model.parameters() if p.requires_grad]
+        print(f"Training {len(params)} parameter groups (decoder and projection only)")
+
             
         self.optimizer = optim.Adam(params, lr=self.learning_rate, weight_decay=1e-4)
         self.scheduler = optim.lr_scheduler.ReduceLROnPlateau(self.optimizer, mode='min', factor=0.5, patience=1, verbose=True)
